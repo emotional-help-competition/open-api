@@ -10,6 +10,7 @@ paths:
     post:
       tags:
       - quiz-result-controller
+      summary: Submit an answer for the Quiz
       operationId: create
       requestBody:
         content:
@@ -20,8 +21,22 @@ paths:
                 $ref: '#/components/schemas/EmotionDto'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
         "200":
-          description: OK
+          description: Answer for the quiz created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Emotion'
+        "400":
+          description: Invalid parameters provided
+        "201":
+          description: Created
           content:
             '*/*':
               schema:
@@ -33,6 +48,7 @@ paths:
     get:
       tags:
       - quiz-controller
+      summary: Get list of quizzes
       operationId: findAll
       parameters:
       - name: pageable
@@ -41,15 +57,24 @@ paths:
         schema:
           $ref: '#/components/schemas/Pageable'
       responses:
-        "200":
-          description: OK
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                type: object
+                type: string
+        "500":
+          description: Error on the server
+        "200":
+          description: Received list of quizzes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Emotion'
     post:
       tags:
       - quiz-controller
+      summary: Create the quiz
       operationId: create_1
       requestBody:
         content:
@@ -58,16 +83,31 @@ paths:
               $ref: '#/components/schemas/QuizRequestDto'
         required: true
       responses:
-        "200":
-          description: OK
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                type: object
+                type: string
+        "200":
+          description: Quiz created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Emotion'
+        "400":
+          description: Invalid parameters provided
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/QuizResponseDto'
   /v1/questions:
     get:
       tags:
       - question-controller
+      summary: Get list of questions
       operationId: findAll_1
       parameters:
       - name: pageable
@@ -76,15 +116,24 @@ paths:
         schema:
           $ref: '#/components/schemas/Pageable'
       responses:
-        "200":
-          description: OK
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                type: object
+                type: string
+        "500":
+          description: Error on the server
+        "200":
+          description: Received list of questions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Emotion'
     post:
       tags:
       - question-controller
+      summary: Create an question
       operationId: create_2
       requestBody:
         content:
@@ -93,16 +142,31 @@ paths:
               $ref: '#/components/schemas/QuestionRequestDto'
         required: true
       responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+        "200":
+          description: Question created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Emotion'
+        "400":
+          description: Invalid parameters provided
         "201":
           description: Created
           content:
             '*/*':
               schema:
-                type: object
+                $ref: '#/components/schemas/QuestionResponseDto'
   /v1/emotions:
     get:
       tags:
       - emotion-controller
+      summary: Get list of emotions
       operationId: findAll_2
       parameters:
       - name: pageable
@@ -111,15 +175,24 @@ paths:
         schema:
           $ref: '#/components/schemas/Pageable'
       responses:
-        "200":
-          description: OK
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                type: object
+                type: string
+        "500":
+          description: Error on the server
+        "200":
+          description: Received list of emotions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Emotion'
     post:
       tags:
       - emotion-controller
+      summary: Create an emotion
       operationId: create_3
       requestBody:
         content:
@@ -128,16 +201,31 @@ paths:
               $ref: '#/components/schemas/EmotionRequestDto'
         required: true
       responses:
-        "200":
-          description: OK
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                type: object
+                type: string
+        "200":
+          description: Emotion created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Emotion'
+        "400":
+          description: Invalid parameters provided
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EmotionResponseDto'
   /v1/quizzes/{id}:
     get:
       tags:
       - quiz-controller
+      summary: Get quiz by id
       operationId: findById
       parameters:
       - name: id
@@ -147,15 +235,21 @@ paths:
           type: integer
           format: int64
       responses:
+        "404":
+          description: Quiz not found
+          content: {}
         "200":
-          description: OK
+          description: Received the quiz
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/Emotion'
+        "400":
+          description: Invalid id supplied
     delete:
       tags:
       - quiz-controller
+      summary: Delete an quiz
       operationId: delete
       parameters:
       - name: id
@@ -165,15 +259,21 @@ paths:
           type: integer
           format: int64
       responses:
+        "404":
+          description: Invalid id supplied
+          content: {}
         "200":
-          description: OK
+          description: Quiz deleted successfully
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/Emotion'
+        "204":
+          description: No Content
     patch:
       tags:
       - quiz-controller
+      summary: Update an quiz
       operationId: update
       parameters:
       - name: id
@@ -189,16 +289,25 @@ paths:
               $ref: '#/components/schemas/QuizRequestDto'
         required: true
       responses:
-        "200":
-          description: OK
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                type: object
+                type: string
+        "200":
+          description: Quiz updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Emotion'
+        "400":
+          description: Invalid parameters provided
   /v1/questions/{id}:
     get:
       tags:
       - question-controller
+      summary: Get question by id
       operationId: findById_1
       parameters:
       - name: id
@@ -208,15 +317,21 @@ paths:
           type: integer
           format: int64
       responses:
+        "404":
+          description: Question not found
+          content: {}
+        "400":
+          description: Invalid id supplied
         "200":
-          description: OK
+          description: Received an question
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/Emotion'
     delete:
       tags:
       - question-controller
+      summary: Delete an question
       operationId: delete_1
       parameters:
       - name: id
@@ -226,15 +341,21 @@ paths:
           type: integer
           format: int64
       responses:
+        "404":
+          description: Invalid id supplied
+          content: {}
         "200":
-          description: OK
+          description: Question deleted successfully
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/Emotion'
+        "204":
+          description: No Content
     patch:
       tags:
       - question-controller
+      summary: Update an question
       operationId: update_1
       parameters:
       - name: id
@@ -250,16 +371,25 @@ paths:
               $ref: '#/components/schemas/QuestionRequestDto'
         required: true
       responses:
-        "200":
-          description: OK
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                type: object
+                type: string
+        "200":
+          description: Question updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Emotion'
+        "400":
+          description: Invalid parameters provided
   /v1/emotions/{id}:
     get:
       tags:
       - emotion-controller
+      summary: Get emotion by id
       operationId: findById_2
       parameters:
       - name: id
@@ -269,15 +399,21 @@ paths:
           type: integer
           format: int64
       responses:
+        "404":
+          description: Emotion not found
+          content: {}
         "200":
-          description: OK
+          description: Received an emotion
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/Emotion'
+        "400":
+          description: Invalid id supplied
     delete:
       tags:
       - emotion-controller
+      summary: Delete an emotion
       operationId: delete_2
       parameters:
       - name: id
@@ -287,15 +423,21 @@ paths:
           type: integer
           format: int64
       responses:
+        "404":
+          description: Invalid id supplied
+          content: {}
         "200":
-          description: OK
+          description: Emotion deleted successfully
           content:
-            '*/*':
+            application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/Emotion'
+        "204":
+          description: No Content
     patch:
       tags:
       - emotion-controller
+      summary: Update an emotion
       operationId: update_2
       parameters:
       - name: id
@@ -311,12 +453,20 @@ paths:
               $ref: '#/components/schemas/EmotionRequestDto'
         required: true
       responses:
-        "200":
-          description: OK
+        "404":
+          description: Not Found
           content:
             '*/*':
               schema:
-                type: object
+                type: string
+        "200":
+          description: Emotion updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Emotion'
+        "400":
+          description: Invalid parameters provided
 components:
   schemas:
     EmotionDto:
@@ -329,12 +479,16 @@ components:
           type: integer
           format: int32
     Emotion:
+      required:
+      - description
       type: object
       properties:
         id:
           type: integer
           format: int64
         description:
+          maxLength: 30
+          minLength: 0
           type: string
     Question:
       required:
@@ -345,6 +499,8 @@ components:
           type: integer
           format: int64
         text:
+          maxLength: 120
+          minLength: 0
           type: string
         emotion:
           $ref: '#/components/schemas/Emotion'
@@ -360,6 +516,24 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Question'
+    QuizResponseDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        createDate:
+          type: string
+          format: date-time
+        questions:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Question'
     QuestionRequestDto:
       type: object
       properties:
@@ -367,9 +541,27 @@ components:
           type: string
         emotion:
           $ref: '#/components/schemas/Emotion'
+    QuestionResponseDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        text:
+          type: string
+        emotion:
+          $ref: '#/components/schemas/Emotion'
     EmotionRequestDto:
       type: object
       properties:
+        description:
+          type: string
+    EmotionResponseDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
         description:
           type: string
     Pageable:
